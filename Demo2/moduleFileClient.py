@@ -212,8 +212,9 @@ if submit_button:
     globalOutput = output
     insertForm.empty()
     setTime6 = time.time()
-    while time.time() - setTime6 < 5:
-        pass
+    currentTime6 = time.time()
+    while currentTime6 - setTime6 < 5:
+        currentTime6 = time.time()
     uploadData()
     st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
     initial_Pending = False
