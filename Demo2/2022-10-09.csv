@@ -1,6 +1,1 @@
 Doctor Name,Queue ID,Appointed,Time,Status
-DoctorA,Q1,False,13:57:10,Waiting
-DoctorB,Q2,True,14:02:29,Waiting
-DoctorB,Q3,True,14:04:05,Waiting
-DoctorA,Q4,True,14:21:23,Waiting
-DoctorB,Q5,True,14:24:18,Waiting

@@ -213,10 +213,11 @@ if submit_button:
     insertForm.empty()
     setTime6 = datetime.now().timestamp()
     currentTime6 = datetime.now().timestamp()
-    while (currentTime6 - setTime6) < 5:
-        currentTime6 = datetime.now().timestamp()
     uploadData()
     st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
+    while (currentTime6 - setTime6) < 5:
+        currentTime6 = datetime.now().timestamp()
+    
     initial_Pending = False
     current_Status = retriveData(output)
     previous = -1
