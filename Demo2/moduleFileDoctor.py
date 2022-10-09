@@ -7,7 +7,7 @@ from firebase_admin import credentials, firestore
 fileName = str(date.today())
 fileName = fileName + ".csv"
 
-cred = credentials.Certificate("certificate.json")
+cred = credentials.Certificate("Demo2/certificate.json")
 app = firebase_admin.initialize_app(cred)
 
 store = firestore.client()
