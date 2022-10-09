@@ -211,8 +211,11 @@ if submit_button:
     output = addQueueV2(doctor, appointed)
     globalOutput = output
     insertForm.empty()
-    st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
+    setTime6 = time.time()
+    while time.time() - setTime6 < 5:
+        pass
     uploadData()
+    st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
     initial_Pending = False
     current_Status = retriveData(output)
     previous = -1
