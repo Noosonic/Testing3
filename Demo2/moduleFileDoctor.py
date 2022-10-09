@@ -28,34 +28,8 @@ def deleteData():
         key = doc.id
         store.collection(collection_name).document(key).delete()
 
-def uploadData():
-    deleteData()
-    data = []
-    headers = []
-    with open(fileName) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        line_count = 0
-        for row in csv_reader:
-            if line_count == 0:
-                for header in row:
-                    headers.append(header)
-                line_count += 1
-            else:
-                obj = {}
-                for idx, item in enumerate(row):
-                    obj[headers[idx]] = item
-                data.append(obj)
-                line_count += 1
-        print(f'Processed {line_count} lines.')
-
-    for batched_data in batch_data(data, 499):
-        batch = store.batch()
-        for data_item in batched_data:
-            doc_ref = store.collection(collection_name).document()
-            batch.set(doc_ref, data_item)
-        batch.commit()
-
-    print('Done')
+def uploadData(data, naming):
+    store.collection(collection_name).document(naming).set(data)
 
 def retriveData(type):
     data = []
@@ -91,34 +65,8 @@ def deleteDoctor():
         key = doc.id
         store.collection(doctorFileName).document(key).delete()
 
-def uploadDoctor():
-    deleteDoctor()
-    data = []
-    headers = []
-    with open(doctorFileName) as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=',')
-        line_count = 0
-        for row in csv_reader:
-            if line_count == 0:
-                for header in row:
-                    headers.append(header)
-                line_count += 1
-            else:
-                obj = {}
-                for idx, item in enumerate(row):
-                    obj[headers[idx]] = item
-                data.append(obj)
-                line_count += 1
-        print(f'Processed {line_count} lines.')
-
-    for batched_data in batch_data(data, 499):
-        batch = store.batch()
-        for data_item in batched_data:
-            doc_ref = store.collection(doctorFileName).document()
-            batch.set(doc_ref, data_item)
-        batch.commit()
-
-    print('Done')
+def uploadDoctor(doctor, naming):
+    store.collection(doctorFileName).document(naming).set(doctor)
 
 def retriveDoctor(caller):
     data = []
@@ -156,10 +104,7 @@ def register(name, password):
             return False
     # readFile.close()
 
-    appendFile = open("DoctorList.csv", 'a', newline="")
-    writer2 = csv.writer(appendFile)
-    writer2.writerow([name, password])
-    appendFile.close()
+    uploadDoctor({"Doctor Name": name, "Password": password}, name)
     return True
 
 def login(name, password):
@@ -183,12 +128,8 @@ def addQueueV2(doctor, appointed):
     amount = len(retrivingData) + 1
     name = "Q" + str(amount)
     rightNow = datetime.now()
-    subQueue = [doctor, name, str(appointed), rightNow.strftime("%H:%M:%S"), "Waiting"]
-    file = open(fileName, 'a', newline="")
-    writer = csv.writer(file)
-    writer.writerow(subQueue)
-    file.close()
-    return name
+    subQueue = {"Doctor Name": doctor, "Queue ID": name, "Appointed": str(appointed), "Time": rightNow.strftime("%H:%M:%S"), "Status": "Waiting"}
+    uploadData(subQueue, name)
 
 def callQueue(queueNumber):
     data = retriveData("All")
@@ -196,7 +137,7 @@ def callQueue(queueNumber):
         if queueNumber == each["Queue ID"]:
             return each
 
-# ------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------
 
 st.title("Hello Doctor. Please enter this registration to continue.")
 
@@ -211,7 +152,6 @@ if registerSubmit:
     result = register(nameInsert, passwordInsert)
     if result:
         st.success("Registered")
-        uploadDoctor()
     else:
         st.error("Someone already used that name")
 
