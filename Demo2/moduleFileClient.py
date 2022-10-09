@@ -211,41 +211,41 @@ if submit_button:
     output = addQueueV2(doctor, appointed)
     globalOutput = output
     insertForm.empty()
-    setTime6 = datetime.time()
-    currentTime6 = datetime.time()
+    setTime6 = datetime.now().timestamp()
+    currentTime6 = datetime.now().timestamp()
     while (currentTime6 - setTime6) < 5:
-        currentTime6 = datetime.time()
+        currentTime6 = datetime.now().timestamp()
     uploadData()
     st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
     initial_Pending = False
     current_Status = retriveData(output)
     previous = -1
-    setTime2 = datetime.time() - 60
+    setTime2 = datetime.now().timestamp() - 60
     delay = 60
     while True:
-        currentTime2 = datetime.time()
+        currentTime2 = datetime.now().timestamp()
         if (currentTime2 - setTime2 > delay):
-            setTime2 = datetime.time()
+            setTime2 = datetime.now().timestamp()
             status = retriveData(output)
             if current_Status != status:
                 current_Status = status
                 if status == "Waiting":
                     st.info("Your queue has not been called yet. Please wait until called.")
                 elif status == "Pending1":
-                    previous = datetime.time()
+                    previous = datetime.now().timestamp()
                     initial_Pending = True
                     current_Status = status
                     updateData(output, "Pending2")
                 elif status == "Pending2":
-                    current = datetime.time()
+                    current = datetime.now().timestamp()
                     time_remains = (360 - (current - previous))
                     current_waiting = -1
-                    setTime3 = datetime.time() - 60
+                    setTime3 = datetime.now().timestamp() - 60
                     while (time_remains // 60) > 1 and current_Status == status:
-                        currentTime3 = datetime.time()
+                        currentTime3 = datetime.now().timestamp()
                         if (currentTime3 - setTime3) > delay:
-                            setTime3 = datetime.time()
-                            current = datetime.time()
+                            setTime3 = datetime.now().timestamp()
+                            current = datetime.now().timestamp()
                             time_remains = (360 - (current - previous))
                             if ((time_remains // 60 < 6) and (time_remains // 60 > 1)) and (time_remains // 60 != current_waiting):
                                 current_waiting = (time_remains // 60)
@@ -254,15 +254,15 @@ if submit_button:
                     current_Status = status
                     updateData(output, "Pending3")
                 elif status == "Pending3":
-                    current = datetime.time()
+                    current = datetime.now().timestamp()
                     time_remains = (360 - (current - previous))
                     st.warning("You queue has been called. You have less than 1 minute left.")
-                    setTime4 = datetime.time() - 60
+                    setTime4 = datetime.now().timestamp() - 60
                     while time_remains > 0 and current_Status == status:
-                        currentTime4 = datetime.time()
+                        currentTime4 = datetime.now().timestamp()
                         if (currentTime4 - setTime4) > delay:
-                            setTime4 = datetime.time()
-                            current = datetime.time()
+                            setTime4 = datetime.now().timestamp()
+                            current = datetime.now().timestamp()
                             time_remains = (360 - (current - previous))
                             status = retriveData(output)
                     current_Status = status
@@ -270,11 +270,11 @@ if submit_button:
                 elif status == "Pending4":
                     st.warning("5 minutes have passed. Please meet the doctor immediately before your queue get skipped.")
                     current_Status = status
-                    setTime5 = datetime.time() - 60
+                    setTime5 = datetime.now().timestamp() - 60
                     while current_Status == status:
-                        currentTime5 = datetime.time()
+                        currentTime5 = datetime.now().timestamp()
                         if (currentTime5 - setTime5) > delay:
-                            setTime5 = datetime.time()
+                            setTime5 = datetime.now().timestamp()
                             status = retriveData(output)
                 elif status == "Complete":
                     st.success("Thank you for coming to meet the doctor today. Have a nice day!")
