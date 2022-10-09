@@ -130,6 +130,7 @@ def addQueueV2(doctor, appointed):
     rightNow = datetime.now()
     subQueue = {"Doctor Name": doctor, "Queue ID": name, "Appointed": str(appointed), "Time": rightNow.strftime("%H:%M:%S"), "Status": "Waiting"}
     uploadData(subQueue, name)
+    return name
 
 def callQueue(queueNumber):
     data = retriveData("All")
