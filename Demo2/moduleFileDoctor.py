@@ -8,7 +8,7 @@ fileName = str(date.today())
 fileName = fileName + ".csv"
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate("Demo2/certificate.json")
+    cred = credentials.Certificate("certificate.json")
     app = firebase_admin.initialize_app(cred)
 
 store = firestore.client()
@@ -17,17 +17,6 @@ collection_name = fileName
 
 doctorFileName = "DoctorList.csv"
 clientFileName = "ClientList.csv"
-
-def batch_data(iterable, n=1):
-    l = len(iterable)
-    for ndx in range(0, l, n):
-        yield iterable[ndx:min(ndx + n, l)]
-
-def deleteData():
-    docs = store.collection(collection_name).get()
-    for doc in docs:
-        key = doc.id
-        store.collection(collection_name).document(key).delete()
 
 def uploadData(data, naming):
     store.collection(collection_name).document(naming).set(data)
@@ -60,12 +49,6 @@ def updateData(QueueID, newStatus):
             store.collection(collection_name).document(key).update({"Status":newStatus})
             break
 
-def deleteDoctor():
-    docs = store.collection(doctorFileName).get()
-    for doc in docs:
-        key = doc.id
-        store.collection(doctorFileName).document(key).delete()
-
 def uploadDoctor(doctor, naming):
     store.collection(doctorFileName).document(naming).set(doctor)
 
@@ -95,12 +78,6 @@ def retrivePatients(doctor):
             subData.append(each["Queue ID"])
     return subData
 
-def deleteClient():
-    docs = store.collection(clientFileName).get()
-    for doc in docs:
-        key = doc.id
-        store.collection(clientFileName).document(key).delete()
-
 def uploadClient(doctor, naming):
     store.collection(clientFileName).document(naming).set(doctor)
 
@@ -114,13 +91,6 @@ def retriveClient():
     return data
 
 # ---------------------------------------------------------------------------------
-
-def resetDoctor():
-    writeFile = open("DoctorList.csv", 'w', newline="")
-    writer1 = csv.writer(writeFile)
-    writer1.writerow(["Doctor Name", "Password"])
-    writeFile.close()
-    deleteDoctor()
 
 def register(name, password):
     # readFile = open("DoctorList.csv", "r")
@@ -141,53 +111,7 @@ def login(name, password):
             return True
     return False
 
-# ---------------------------------------------------------------------------------
-
-def resetClient():
-    writeFile = open("DoctorList.csv", 'w', newline="")
-    writer1 = csv.writer(writeFile)
-    writer1.writerow(["Doctor Name", "Password"])
-    writeFile.close()
-    deleteClient()
-
-def registerClient(name, password):
-    # readFile = open("DoctorList.csv", "r")
-    # reader = csv.reader(readFile)
-    reader = retriveClient()
-    for row in reader:
-        if row == name:
-            return False
-    # readFile.close()
-
-    uploadClient({"Client Name": name, "Password": password}, name)
-    return True
-
-def loginClient(name, password):
-    listing = retriveClient()
-    for row in listing:
-        if (row[0] == name) and (row[1] == password):
-            return True
-    return False
-
-def retriveClientData(name, password):
-    checker = loginClient(name, password)
-    if checker:
-        data = retriveData("All")
-        for each in data:
-            if each["Username"] == name:
-                return each["Queue ID"]
-        return str("False2")
-    else:
-        return str("False1")
-
 # ----------------------------------------------------------------------------------------------
-
-def resetQueueV2():
-    file = open(fileName, "w", newline="")
-    writer = csv.writer(file)
-    writer.writerow(["Doctor Name", "Queue ID", "Appointed", "Time", "Status"])
-    file.close()
-    deleteData()
 
 def addQueueV2(username, password, doctor, appointed):
     retrivingUser = retriveClient()
