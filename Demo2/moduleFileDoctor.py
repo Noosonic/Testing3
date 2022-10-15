@@ -1,5 +1,4 @@
 import streamlit as st
-import csv
 from datetime import datetime, date, time
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -78,18 +77,6 @@ def retrivePatients(doctor):
             subData.append(each["Queue ID"])
     return subData
 
-def uploadClient(doctor, naming):
-    store.collection(clientFileName).document(naming).set(doctor)
-
-def retriveClient():
-    data = []
-
-    docs = store.collection(clientFileName).get()
-    for doc in docs:
-        data.append(doc.to_dict())
-
-    return data
-
 # ---------------------------------------------------------------------------------
 
 def register(name, password):
@@ -112,23 +99,6 @@ def login(name, password):
     return False
 
 # ----------------------------------------------------------------------------------------------
-
-def addQueueV2(username, password, doctor, appointed):
-    retrivingUser = retriveClient()
-    for each in retrivingUser:
-        if (username == each["Client Name"]):
-            if (password == each["Password"]):
-                amount = len(retriveData("All")) + 1
-                name = "Q" + str(amount)
-                rightNow = datetime.now()
-                if appointed == False:
-                    doctor = "Walk in"
-                subQueue = {"Username": username, "Password": password, "Doctor Name": doctor, "Queue ID": name, "Appointed": str(appointed), "Time": rightNow.strftime("%H:%M:%S"), "Status": "Waiting"}
-                uploadData(subQueue, name)
-                return name
-            else:
-                return "Wrong Password"
-    return "No user"
 
 def callQueue(queueNumber):
     data = retriveData("All")

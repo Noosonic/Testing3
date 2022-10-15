@@ -1,5 +1,4 @@
 import streamlit as st
-import csv
 from datetime import datetime, date, time
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -129,12 +128,6 @@ def addQueueV2(username, password, doctor, appointed):
             else:
                 return "Wrong Password"
     return "No user"
-
-def callQueue(queueNumber):
-    data = retriveData("All")
-    for each in data:
-        if queueNumber == each["Queue ID"]:
-            return each
 
 # ---------------------------------------------------------------------------------------------
 
