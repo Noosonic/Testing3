@@ -16,6 +16,7 @@ store = firestore.client()
 collection_name = fileName
 
 doctorFileName = "DoctorList.csv"
+clientFileName = "ClientList.csv"
 
 def batch_data(iterable, n=1):
     l = len(iterable)
