@@ -7,7 +7,7 @@ fileName = str(date.today())
 fileName = fileName + ".csv"
 
 if not firebase_admin._apps:
-    cred = credentials.Certificate("certificate.json")
+    cred = credentials.Certificate("Demo2/certificate.json")
     app = firebase_admin.initialize_app(cred)
 
 store = firestore.client()
