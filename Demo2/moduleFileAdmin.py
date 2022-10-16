@@ -17,6 +17,7 @@ collection_name = fileName
 
 doctorFileName = "DoctorList.csv"
 clientFileName = "ClientList.csv"
+settingFileName = "Setting.csv"
 
 def batch_data(iterable, n=1):
     l = len(iterable)

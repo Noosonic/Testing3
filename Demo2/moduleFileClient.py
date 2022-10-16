@@ -1,5 +1,5 @@
 import streamlit as st
-from datetime import datetime, date, time
+from datetime import datetime, date
 import firebase_admin
 from firebase_admin import credentials, firestore
 
@@ -16,6 +16,7 @@ collection_name = fileName
 
 doctorFileName = "DoctorList.csv"
 clientFileName = "ClientList.csv"
+settingFileName = "Setting.csv"
 
 def uploadData(data, naming):
     store.collection(collection_name).document(naming).set(data)
@@ -168,7 +169,6 @@ if submit_button:
         st.error("There is no user with that name or Incorrect password")
     else:
         globalOutput = output
-        insertForm.empty()
         setTime6 = datetime.now().timestamp()
         currentTime6 = datetime.now().timestamp()
         st.success("Thank you for lining up. Your Queue Number is {}.\nPlease screenshot it until your queue has been called.".format(output))
